@@ -131,7 +131,7 @@ Run evaluation OK.
 
 8. simulate:fixed
    
-*command
+* command
 
 ```python3 calibrator/simulator.py -i /work/SGS_V1.7_18.04/home/itemhsu/amtk/sdk/C539/MMD00V0.0.6_Release/ipu_sdk/SGS_Models/resource/detection/coco2017_calibration_set32 -m yolov10_fixed.sim -l ~/SGS_Models/resource/detection/coco2017_val_set100.json -c Unknown -t Fixed -n ../preposs.py --num_process 10```
 
