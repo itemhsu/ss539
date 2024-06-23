@@ -94,3 +94,16 @@ def get_image(img_path, resizeH=640, resizeW=640, resizeC=3, norm=True, meanB=10
 def image_preprocess(img_path, norm=True):
     return get_image(img_path, norm=norm)
 ```
+6 compiler
+```
+python3 calibrator/compiler.py -m yolov10_fixed.sim
+```
+output is as 
+```
+Start to run convert offline network...
+Run Offline OK. Cost time: 00:00:04.
+Run Offline OK.
+Start to run pack tool...
+Offline model at: /work/SGS_V1.7_18.04/home/itemhsu/amtk/SGS_IPU_SDK/Scripts/yolov10_fixed.sim_sgsimg.img
+Run Pack Tool OK.
+```
