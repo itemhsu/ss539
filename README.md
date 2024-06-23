@@ -47,3 +47,9 @@ dequantizations=TRUE;
 [CONV_CONFIG]
 tensor_arrays='conv1-1,conv2-1';
 ```
+
+5. calibrate
+```
+python3  calibrator/calibrator.py -i /work/SGS_V1.7_18.04/home/itemhsu/amtk/sdk/C539/MMD00V0.0.6_Release/ipu_sdk/SGS_Models/resource/detection/coco2017_calibration_set32  --input_config /work/SGS_V1.7_18.04/home/itemhsu/yolo10/yolov10/input.cfg  -m yolov10_float.sim -n /work/SGS_V1.7_18.04/home/itemhsu/amtk/SGS_IPU_SDK/preposs.py --num_process 20
+```
+
