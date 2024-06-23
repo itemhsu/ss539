@@ -103,7 +103,5 @@ Offline model at: /work/SGS_V1.7_18.04/home/itemhsu/amtk/SGS_IPU_SDK/Scripts/yol
 Run Pack Tool OK.
 ```
 7. simulate
-```
-python3 calibrator/simulator.py -i /work/SGS_V1.7_18.04/home/itemhsu/amtk/sdk/C539/MMD00V0.0.6_Release/ipu_sdk/SGS_Models/resource/detection/coco2017_calibration_set32 -m yolov10_float.sim -l ~/SGS_Models/resource/detection/coco2017_val_set100.json -c Detection -t Float -n ../preposs.py --num_process 10
-```
+```python3 calibrator/simulator.py -i /work/SGS_V1.7_18.04/home/itemhsu/amtk/sdk/C539/MMD00V0.0.6_Release/ipu_sdk/SGS_Models/resource/detection/coco2017_calibration_set32 -m yolov10_float.sim -l ~/SGS_Models/resource/detection/coco2017_val_set100.json -c Unknown -t Float -n ../preposs.py --num_process 10```
    
