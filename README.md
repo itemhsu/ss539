@@ -52,4 +52,45 @@ tensor_arrays='conv1-1,conv2-1';
 ```
 python3  calibrator/calibrator.py -i /work/SGS_V1.7_18.04/home/itemhsu/amtk/sdk/C539/MMD00V0.0.6_Release/ipu_sdk/SGS_Models/resource/detection/coco2017_calibration_set32  --input_config /work/SGS_V1.7_18.04/home/itemhsu/yolo10/yolov10/input.cfg  -m yolov10_float.sim -n /work/SGS_V1.7_18.04/home/itemhsu/amtk/SGS_IPU_SDK/preposs.py --num_process 20
 ```
+the prepose.py is as
+```
+import cv2
+import numpy as np
 
+def get_image(img_path, resizeH=640, resizeW=640, resizeC=3, norm=True, meanB=104.0, meanG=117.0, meanR=123.0, std=1.0, rgb=False, nchw=False):
+    img = cv2.imread(img_path, flags=-1)
+    if img is None:
+        raise FileNotFoundError('No such image: {}'.format(img_path))
+
+    try:
+        img_dim = img.shape[2]
+    except IndexError:
+        img_dim = 1
+    if img_dim == 4:
+        img = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
+    elif img_dim == 1:
+        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+    img_float = img.astype('float32')
+    img_norm = cv2.resize(img_float, (resizeW, resizeH), interpolation=cv2.INTER_LINEAR)
+
+    if norm and (resizeC == 3):
+        img_norm = (img_norm - [meanB, meanG, meanR]) / std
+        img_norm = img_norm.astype('float32')
+    elif norm and (resizeC == 1):
+        img_norm = (img_norm - meanB) / std
+        img_norm = img_norm.astype('float32')
+    else:
+        img_norm = np.round(img_norm).astype('uint8')
+
+    if rgb:
+        img_norm = cv2.cvtColor(img_norm, cv2.COLOR_BGR2RGB)
+
+    if nchw:
+        # NCHW
+        img_norm = np.transpose(img_norm, axes=(2, 0, 1))
+
+    return np.expand_dims(img_norm, 0)
+
+def image_preprocess(img_path, norm=True):
+    return get_image(img_path, norm=norm)
+```
