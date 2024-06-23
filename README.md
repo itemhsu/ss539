@@ -102,7 +102,35 @@ Start to run pack tool...
 Offline model at: /work/SGS_V1.7_18.04/home/itemhsu/amtk/SGS_IPU_SDK/Scripts/yolov10_fixed.sim_sgsimg.img
 Run Pack Tool OK.
 ```
-7. simulate
+7. simulate:float
    
 ```python3 calibrator/simulator.py -i /work/SGS_V1.7_18.04/home/itemhsu/amtk/sdk/C539/MMD00V0.0.6_Release/ipu_sdk/SGS_Models/resource/detection/coco2017_calibration_set32 -m yolov10_float.sim -l ~/SGS_Models/resource/detection/coco2017_val_set100.json -c Unknown -t Float -n ../preposs.py --num_process 10```
-   
+* output
+```
+Start to evaluate on coco2017_calibration_set32...
+Net:
+model (
+Input(0):
+    name:	input
+    index:	0
+    dtype:	<class 'numpy.float32'>
+    layouts:	NHWC
+    shape:	[1, 640, 640, 3]
+Output(0):
+    name:	output
+    index:	0
+    dtype:	<class 'numpy.float32'>
+    shape:	[1, 84, 8400]
+)
+
+[==================================================]100.00% | ETA: 00:00:00
+Total time elapsed: 00:00:05
+Run evaluation OK.
+```
+* output files are located at log/output/*txt
+
+8. simulate:fixed
+*command
+
+```python3 calibrator/simulator.py -i /work/SGS_V1.7_18.04/home/itemhsu/amtk/sdk/C539/MMD00V0.0.6_Release/ipu_sdk/SGS_Models/resource/detection/coco2017_calibration_set32 -m yolov10_fixed.sim -l ~/SGS_Models/resource/detection/coco2017_val_set100.json -c Unknown -t Fixed -n ../preposs.py --num_process 10```
+     
