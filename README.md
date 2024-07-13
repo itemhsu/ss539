@@ -26,26 +26,39 @@ source cfg_env.sh
 cd Scripts/
 python3 ConvertTool/ConvertTool.py -h
 ```
-```python3 ConvertTool/ConvertTool.py onnx --model_file /work/SGS_V1.7_18.04/home/itemhsu/yolo10/yolov10/yolov10n.onnx --input_shapes 1,3,640,640 --input_config /work/SGS_V1.7_18.04/home/itemhsu/yolo10/yolov10/input.cfg --output_file yolov10_float.sim```
+```python3 ConvertTool/ConvertTool.py onnx --model_file /work/SGS_V1.7_18.04/home/itemhsu/yolo10/yolov10/yolov10n.onnx --input_shapes 1,3,640,640 --input_config /work/SGS_V1.7_18.04/home/itemhsu/amtk/SGS_IPU_SDK_24070310_patch/onnx_yolov8s/input_config.ini --output_file yolov10_float.sim --soc_version mochi```
+* soc_version is
+  
+| soc_version  | Type |
+| ------------- | ------------- |
+| muffin  |  |
+| maruko  |  |
+| opera  |  |
+| souffle  |  |
+| iford  |  |
+| ifado |  |
+| pcupid |  |
+
+
 * the input config is as
 ```
 [INPUT_CONFIG]
-inputs='input';
-training_input_formats=BGR;
-input_formats=BGR;
+inputs=images;
+training_input_formats=RGB;
+input_formats=RGB;
 quantizations=TRUE;
-mean=127.5:127.5:127.5;
-std_value=1.0;
+mean_red=0;
+mean_green=0;
+mean_blue=0;
+std_value=255;
 
 [OUTPUT_CONFIG]
-outputs='output';
+outputs=output0;
 dequantizations=TRUE;
-
-[CONV_CONFIG]
-tensor_arrays='conv1-1,conv2-1';
 ```
 
 5. calibrate
+   
 ```python3  calibrator/calibrator.py -i /work/SGS_V1.7_18.04/home/itemhsu/amtk/sdk/C539/MMD00V0.0.6_Release/ipu_sdk/SGS_Models/resource/detection/coco2017_calibration_set32  --input_config /work/SGS_V1.7_18.04/home/itemhsu/yolo10/yolov10/input.cfg  -m yolov10_float.sim -n /work/SGS_V1.7_18.04/home/itemhsu/amtk/SGS_IPU_SDK/preposs.py --num_process 20```
 * the prepose.py is as
 ```
