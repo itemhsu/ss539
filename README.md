@@ -59,7 +59,7 @@ dequantizations=TRUE;
 
 5. calibrate
    
-``python3  calibrator/calibrator.py -i /work/SGS_V1.7_18.04/home/itemhsu/amtk/sdk/C539/MMD00V0.0.6_Release/ipu_sdk/SGS_Models/resource/detection/coco2017_calibration_set32 --input_config /work/SGS_V1.7_18.04/home/itemhsu/amtk/SGS_IPU_SDK_24070310_patch/onnx_yolov8s/input_config.ini   -m yolov10_float.sim -n /work/SGS_V1.7_18.04/home/itemhsu/amtk/SGS_IPU_SDK_24070310_patch/onnx_yolov8s/onnx_yolov8s_preprocess.py   --soc_version mochi```
+```python3  calibrator/calibrator.py -i /work/SGS_V1.7_18.04/home/itemhsu/amtk/sdk/C539/MMD00V0.0.6_Release/ipu_sdk/SGS_Models/resource/detection/coco2017_calibration_set32 --input_config /work/SGS_V1.7_18.04/home/itemhsu/amtk/SGS_IPU_SDK_24070310_patch/onnx_yolov8s/input_config.ini   -m yolov10_float.sim -n /work/SGS_V1.7_18.04/home/itemhsu/amtk/SGS_IPU_SDK_24070310_patch/onnx_yolov8s/onnx_yolov8s_preprocess.py   --soc_version mochi```
 * the onnx_yolov8s_preprocess.py is as
 
 ```
