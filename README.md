@@ -59,48 +59,59 @@ dequantizations=TRUE;
 
 5. calibrate
    
-```python3  calibrator/calibrator.py -i /work/SGS_V1.7_18.04/home/itemhsu/amtk/sdk/C539/MMD00V0.0.6_Release/ipu_sdk/SGS_Models/resource/detection/coco2017_calibration_set32  --input_config /work/SGS_V1.7_18.04/home/itemhsu/yolo10/yolov10/input.cfg  -m yolov10_float.sim -n /work/SGS_V1.7_18.04/home/itemhsu/amtk/SGS_IPU_SDK/preposs.py --num_process 20```
-* the prepose.py is as
+``python3  calibrator/calibrator.py -i /work/SGS_V1.7_18.04/home/itemhsu/amtk/sdk/C539/MMD00V0.0.6_Release/ipu_sdk/SGS_Models/resource/detection/coco2017_calibration_set32 --input_config /work/SGS_V1.7_18.04/home/itemhsu/amtk/SGS_IPU_SDK_24070310_patch/onnx_yolov8s/input_config.ini   -m yolov10_float.sim -n /work/SGS_V1.7_18.04/home/itemhsu/amtk/SGS_IPU_SDK_24070310_patch/onnx_yolov8s/onnx_yolov8s_preprocess.py   --soc_version mochi```
+* the onnx_yolov8s_preprocess.py is as
+
 ```
 import cv2
 import numpy as np
 
-def get_image(img_path, resizeH=640, resizeW=640, resizeC=3, norm=True, meanB=104.0, meanG=117.0, meanR=123.0, std=1.0, rgb=False, nchw=False):
-    img = cv2.imread(img_path, flags=-1)
-    if img is None:
-        raise FileNotFoundError('No such image: {}'.format(img_path))
+def letterbox(im, new_shape=(640, 640), color=(114, 114, 114), auto=False, scaleFill=False, scaleup=True, stride=32):
+    # Resize and pad image while meeting stride-multiple constraints
+    shape = im.shape[:2]  # current shape [height, width]
+    if isinstance(new_shape, int):
+        new_shape = (new_shape, new_shape)
 
-    try:
-        img_dim = img.shape[2]
-    except IndexError:
-        img_dim = 1
-    if img_dim == 4:
-        img = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
-    elif img_dim == 1:
-        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-    img_float = img.astype('float32')
-    img_norm = cv2.resize(img_float, (resizeW, resizeH), interpolation=cv2.INTER_LINEAR)
+    # Scale ratio (new / old)
+    r = min(new_shape[0] / shape[0], new_shape[1] / shape[1])
+    if not scaleup:  # only scale down, do not scale up (for better val mAP)
+        r = min(r, 1.0)
 
-    if norm and (resizeC == 3):
-        img_norm = (img_norm - [meanB, meanG, meanR]) / std
-        img_norm = img_norm.astype('float32')
-    elif norm and (resizeC == 1):
-        img_norm = (img_norm - meanB) / std
-        img_norm = img_norm.astype('float32')
+    # Compute padding
+    ratio = r, r  # width, height ratios
+    new_unpad = int(round(shape[1] * r)), int(round(shape[0] * r))
+    dw, dh = new_shape[1] - new_unpad[0], new_shape[0] - new_unpad[1]  # wh padding
+    if auto:  # minimum rectangle
+        dw, dh = np.mod(dw, stride), np.mod(dh, stride)  # wh padding
+    elif scaleFill:  # stretch
+        dw, dh = 0.0, 0.0
+        new_unpad = (new_shape[1], new_shape[0])
+        ratio = new_shape[1] / shape[1], new_shape[0] / shape[0]  # width, height ratios
+
+    dw /= 2  # divide padding into 2 sides
+    dh /= 2
+
+    if shape[::-1] != new_unpad:  # resize
+        im = cv2.resize(im, new_unpad, interpolation=cv2.INTER_LINEAR)
+    top, bottom = int(round(dh - 0.1)), int(round(dh + 0.1))
+    left, right = int(round(dw - 0.1)), int(round(dw + 0.1))
+    im = cv2.copyMakeBorder(im, top, bottom, left, right, cv2.BORDER_CONSTANT, value=color)  # add border
+    return im, ratio, (dw, dh)
+
+
+def image_preprocess(image_file, norm=True):
+    im = cv2.imread(image_file)
+
+    im, ratio, (dw, dh) = letterbox(im)
+
+    im = im[:, :, ::-1]  # BGR to RGB
+    im = np.expand_dims(im, 0)
+    im = np.ascontiguousarray(im)
+    if norm:
+        return im.astype(np.float32) / 255
     else:
-        img_norm = np.round(img_norm).astype('uint8')
+        return im
 
-    if rgb:
-        img_norm = cv2.cvtColor(img_norm, cv2.COLOR_BGR2RGB)
-
-    if nchw:
-        # NCHW
-        img_norm = np.transpose(img_norm, axes=(2, 0, 1))
-
-    return np.expand_dims(img_norm, 0)
-
-def image_preprocess(img_path, norm=True):
-    return get_image(img_path, norm=norm)
 ```
 6 compiler
 ```
