@@ -128,8 +128,7 @@ Run Pack Tool OK.
 ```
 7. simulate:float
    
-```python3 calibrator/simulator.py -i /work/SGS_V1.7_18.04/home/itemhsu/amtk/sdk/C539/MMD00V0.0.6_Release/ipu_sdk/SGS_Models/resource/detection/coco2017_calibration_set32 -m yolov10_float.sim -l ~/SGS_Models/resource/detection/coco2017_val_set100.json -c Unknown -t Float -n ../preposs.py --num_process 10```
-* output
+```python3 calibrator/simulator.py -i /work/SGS_V1.7_18.04/home/itemhsu/amtk/sdk/C539/MMD00V0.0.6_Release/ipu_sdk/SGS_Models/resource/detection/coco2017_calibration_set32 -m yolov10_float.sim -l ~/SGS_Models/resource/detection/coco2017_val_set100.json -c Unknown -t Float -n   /work/SGS_V1.7_18.04/home/itemhsu/amtk/SGS_IPU_SDK_24070310_patch/onnx_yolov8s/onnx_yolov8s_preprocess.py --num_process 10    --soc_version mochi
 ```
 Start to evaluate on coco2017_calibration_set32...
 Net:
