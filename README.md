@@ -45,7 +45,7 @@ python3 ConvertTool/ConvertTool.py -h
 [INPUT_CONFIG]
 inputs=images;
 training_input_formats=RGB;
-input_formats=RGB;
+input_formats=RGBA;
 quantizations=TRUE;
 mean_red=0;
 mean_green=0;
