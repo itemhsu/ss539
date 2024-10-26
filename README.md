@@ -7,7 +7,8 @@ usage guild
 tar -xvJf SGS_Models.tar.xz
 ```
 2. install docker
-``` 
+```
+cd ~/amtk/sdk/C539/MMD00V0.0.6_Release/ipu_sdk/
 cd dockerfile_v1.7/
 docker build -t sgs_docker:v1.7 .
 dos2unix ./run_docker.sh 
@@ -34,7 +35,7 @@ python3 ConvertTool/ConvertTool.py -h
 | muffin  |  |
 | maruko  |  |
 | opera  |  |
-| souffle  |  |
+| souffle  | 539 |
 | iford  |  |
 | ifado |  |
 | pcupid |  |
@@ -44,17 +45,20 @@ python3 ConvertTool/ConvertTool.py -h
 ```
 [INPUT_CONFIG]
 inputs=images;
+input_formats=YUV_NV12;
 training_input_formats=RGB;
-input_formats=RGBA;
 quantizations=TRUE;
-mean_red=0;
-mean_green=0;
-mean_blue=0;
+mean_red=0.0;
+mean_green=0.0;
+mean_blue=0.0;
 std_value=255;
 
 [OUTPUT_CONFIG]
 outputs=output0;
-dequantizations=TRUE;
+dequantizations=FALSE;
+[CONV_CONFIG]
+input_format=ALL_INT16;
+
 ```
 
 5. calibrate
